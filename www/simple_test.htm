@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script type="text/javascript" src="/applet/jsmol/JSmol.min.js"></script>
+<script type="text/javascript">
+
+var jmolApplet0; // set up in HTML table, below
+
+var Info = {
+	width: 450,
+	height: 450,
+	debug: false,
+	color: "white",
+	addSelectionOptions: false,
+	serverURL: "http://chemapps.stolaf.edu/jmol/jsmol/php/jsmol.php",
+	use: "HTML5",
+	j2sPath: "/applet/jsmol/j2s",
+    src: "/pdb/a.pdb",
+	readyFunction: null,// jmol_isReady,
+	script: null,//script,
+	disableInitialConsole: true
+}
+
+
+</script>
+</head>
+<body>
+    <table>
+        <tr>
+            <td align=center>
+                <script type="text/javascript">
+                    jmolApplet0 = Jmol.getApplet("jmolApplet0", Info)
+                </script>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

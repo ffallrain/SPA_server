@@ -58,30 +58,30 @@ And another table of original SPA water information:
 
 Command :
 > ```
-    CREATE TABLE water_cluster
-    ( index_number INT(6) NOT NULL PRIMARY KEY,
-    water_index INT(4) NOT NULL,
-    water_type CHAR(3) DEFAULT "SOL",
-    occ FLOAT(4.2),
-    rt FLOAT(4.2),
-    o_x FLOAT(8.3),
-    o_y FLOAT(8.3),
-    o_z FLOAT(8.3),
-    h1_x FLOAT(8.3),
-    h1_y FLOAT(8.3),
-    h1_z FLOAT(8.3),
-    h2_x FLOAT(8.3),
-    h2_y FLOAT(8.3),
-    h2_z FLOAT(8.3),
-    vdw_sol FLOAT,
-    ele_sol FLOAT,
-    vdw_rec FLOAT,
-    ele_rec FLOAT,
-    t_s FLOAT,
-    o_s FLOAT,
-    spa_g FLOAT,
-    register_date TIMESTAMP,
-    ) ;
+       CREATE TABLE water_cluster
+       ( index_number INT(6) NOT NULL,
+       water_index INT(4) NOT NULL,
+       water_type CHAR(3) DEFAULT "SOL",
+       occ FLOAT(4.2),
+       rt FLOAT(4.2),
+       o_x FLOAT(8.3),
+       o_y FLOAT(8.3),
+       o_z FLOAT(8.3),
+       h1_x FLOAT(8.3),
+       h1_y FLOAT(8.3),
+       h1_z FLOAT(8.3),
+       h2_x FLOAT(8.3),
+       h2_y FLOAT(8.3),
+       h2_z FLOAT(8.3),
+       vdw_sol FLOAT,
+       ele_sol FLOAT,
+       vdw_rec FLOAT,
+       ele_rec FLOAT,
+       t_s FLOAT,
+       o_s FLOAT,
+       spa_g FLOAT,
+       register_date TIMESTAMP
+       ) ;
 ```
 
 Result table:

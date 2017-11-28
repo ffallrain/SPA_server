@@ -3,6 +3,7 @@ import sys,os
 import cgi
 import cgitb
 import fpdb
+import fSPA
 cgitb.enable(display=0, logdir="/log/cgi_test.log")
 
 if True:
@@ -75,6 +76,7 @@ if True:
                   text-decoration:none; 
               }
               </style>
+               
 
               <td align="center" valign="middle" width="12%"><a href="%20index.html" class=
               " navText"><span class="STYLE2">SPA-Databse</span></a></td>
@@ -127,132 +129,45 @@ if True:
               <td width="10%"></td>
             </tr>
           </table>
+
         '''
     body_bottom = '''
         </body>
         </html>
     '''
 
-dir_path='submit_jobs'
-job_index_file = "%s/jobindex.data"%dir_path
-
-index = int(open(job_index_file).read()) + 1
-with open(job_index_file,'w') as ofp :
-    ofp.write("%d\n"%index)
-an = "%05d"%index
-
 if True:
     print head
     print body_top
-    print "<h2>\n"
-    print "Please select protonate state of HIS.\n"
-    print "</h2>\n"
-    print "<br>\n"
-    print "<h3>\n"
-    print "Your job accession number is <a href=tmp.html> %s </a>. \n"%an
-    print "</h3>\n"
 
-    print """
-      <table width="90%"  height=600 cellspacing="1" cellpadding="0" align="center" frame="hsides" rules="cols"> <!-- graphic applet & water data -->
-          <tr>
-            <td width="5%" align="center" valign='top'><font size="4.5" color="#0099FF">  
-            </td>
-            <td id="jmolapplet" width="45%" align="center" valign='top'><font size="4.5" color="#0099FF">  <!-- Applet 0 -->
-                <script type="text/javascript">
-                    Jmol.getApplet("jmolApplet0", Info0);
-                </script>
-            </td>
-    """
-
-if True:
     form = cgi.FieldStorage()
     keys = form.keys()
 
-    recfile = "%s/%s/rec.pdb"%(dir_path,an)
-    ligfile = "%s/%s/lig.pdb"%(dir_path,an)
-    try:
-        os.mkdir("%s/%s"%(dir_path,an))
-        with open(recfile,'w') as ofp:
-            ofp.write( form.getfirst('rec','') )
-
-        with open(ligfile,'w') as ofp:
-            ofp.write( form.getfirst('lig','') )
-
-    except:
-        pass
+if True:
+    for key in keys:
+        if key[:5] == "INDEX":
+            index = "%05d"%int(key[6:])
+            continue
 
 if True:
-    rec = fpdb.fPDB("%s/%s/rec.pdb"%(dir_path,an))
-    lig = fpdb.fPDB("%s/%s/lig.pdb"%(dir_path,an)).topology.residues[0]
-
-    his_list = list()
-    for resi in rec.topology.residues:
-        if resi.name in ("HIS","HID","HIP","HIE") and fpdb.dist_resi_resi(lig,resi)<10:
-            his_list.append(resi)
-
-if True:
-    print '''
-        <td width="45" align="center"><font size="4.5" color="#0099FF"> <!-- table data 1 -->
-          <div style="overflow:scroll;height:600px">
-              <table class="tg" scrolling="yes" >
-                <tr height=15>
-                  <th class="tg-amwm">Residue No.</th>
-                  <th class="tg-amwm">Protonatestate</th>
-                </tr>
-    '''
-    print '''
-        <script>
-            function focusResidue(hisnum,histype){
-                console.log(hisnum+histype);
-                Jmol.script(jmolApplet0,"; select within(10,TRUE,protein and "+hisnum+ ") ;");
-                Jmol.script(jmolApplet0,"; wireframe 50 ;");
-                Jmol.script(jmolApplet0,"; cartoon off ;");
-                Jmol.script(jmolApplet0,"; select protein and "+hisnum+ ";");
-                Jmol.script(jmolApplet0,"; show best rotation  ;");
-                Jmol.script(jmolApplet0,"; ZOOMTO {protein and "+ hisnum+"} ;");
-                Jmol.script(jmolApplet0,"; ZOOMTO IN; ");
-            };
-        </script>
-    '''
-    print '''
-        <form name=myform action="/cgi-bin/step2.cgi" target="result2" method="get">
-    '''
-    for his in his_list:
-        hisnum = his.index
-        print """
-            <tr height=10>
-              <td>%d</td>
-              <td> 
-                <input type="radio" name='%d' value="HID" onClick="focusResidue(%d,'HID')">HID
-                <input type="radio" name='%d' value="HIE" onClick="focusResidue(%d,'HIE')">HIE
-                <input type="radio" name='%d' value="HIP" onClick="focusResidue(%d,'HIP')">HIP
-              </td>
-            </tr>
-        """%((hisnum,)*7)
-    print """
-        <tr height=10>
-            <td>
-                <input type="submit" name="INDEX_%s" value="submit">
-            </td>
-        </tr>
-    """%an
-    print """
-        </form>
-        </table>
-        </div>
-        </td>
-    """
+    ofp = open("/home/fuqy/work/SPA_database/www/submit_jobs/%s/his.list"%index,'w')
+    for key in keys:
+        if key[:5] != "INDEX":
+            ofp.write("%s %s\n"%(key,form.getfirst(key)) )
     ofp.close()
+            
 
-print """
-        <script type="text/javascript">
-            $(document).ready(function() {
-                    Jmol.script(jmolApplet0,';load "PDB::%s"; ');
-                    Jmol.script(jmolApplet0,';load append "PDB::%s"; ');
-                    console.log("javascript is working");
-            });
-        </script>
-"""%("/submit_jobs/%s/lig.pdb"%an,"/submit_jobs/%s/rec.pdb"%an,)
+if True:
+    pass
+#    fSPA.prepare_md(dirpath=index)
+
+if True:
+    print """
+    <h1>
+    Job submit. Your accession number is <a href="/cgi-bin/check_job_status.cgi%%id=%s" > %s </a> .
+    </h1>
+    """%(index,index)
+    
+
 print body_bottom
-
 

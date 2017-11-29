@@ -159,7 +159,7 @@ if True:
 
 if True:
     pass
-#    fSPA.prepare_md(dirpath=index)
+    fSPA.prepare_md(dirpath=index)
 
 if True:
     print """

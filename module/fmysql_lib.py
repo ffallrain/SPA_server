@@ -219,4 +219,68 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
         cursor.close()
         cnx.close()
 
+def register_job(dir_name):
 
+    if True: # link to database
+        cnx = mc.MySQLConnection( user=user, password=password, host=host, database=database )
+        cursor = cnx.cursor()
+
+    index = int(dir_name)
+
+    query = """SELECT job_index
+            FROM job_status 
+            WHERE job_index = %d
+            """%index
+    cursor.execute( query,() )
+    answer = cursor.fetchall() 
+    N_result = len(answer)
+    for a in answer:
+        pass
+    if N_result >= 1:
+        cursor.close()
+        cnx.close()
+        return False
+    else:
+        cnx = mc.MySQLConnection( user=user, password=password, host=host, database=database )
+        query = ('''
+                INSERT INTO job_status 
+                (job_index)
+                VALUES
+                (%d)
+        '''%index)
+        cursor = cnx.cursor()
+        cursor.execute( query,() )
+        for result in cursor.stored_results():
+            a = result.fetchall()
+        cursor.close()
+        cnx.close()
+        return True
+
+def update_job_status( job_index, job_status = None , index_number =0  ):
+    job_index = int(job_index)
+    if True: # link to database
+        cnx = mc.MySQLConnection( user=user, password=password, host=host, database=database )
+        cursor = cnx.cursor()
+
+    if job_status != None:
+        query = """UPDATE job_status
+                SET  
+                    status = "%s"
+                WHERE job_index = %d
+                """%(job_status,job_index)
+        print query
+        cursor = cnx.cursor()
+        cursor.execute( query,() )
+        for result in cursor.stored_results():
+            a = result.fetchall()
+    if index_number != 0:
+        query = """UPDATE job_status
+                SET  
+                    index_number = %d
+                WHERE job_index = %d
+                """%(index_number,job_index)
+        cursor = cnx.cursor()
+        cursor.execute( query,() )
+        for result in cursor.stored_results():
+            a = result.fetchall()
+    return True

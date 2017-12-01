@@ -142,42 +142,18 @@ if True:
 
     form = cgi.FieldStorage()
     keys = form.keys()
+    index = form.getfirst('index')
 
 if True:
-    print '''<p>
-             <h2>
-             Your structure is under processing. Here's the output from background programs:
-             </h2>
-             </p> 
-    '''
-    print '''<textarea rows="30" cols="300" name="comment" >\n'''
+    fSPA.submit_job(index)
 
-if True:
-    for key in keys:
-        if key[:5] == "INDEX":
-            index = "%05d"%int(key[6:])
-            continue
-
-if True:
-    ofp = open("/home/fuqy/work/SPA_database/www/submit_jobs/%s/his.list"%index,'w')
-    for key in keys:
-        if key[:5] != "INDEX":
-            ofp.write("%s %s\n"%(key,form.getfirst(key)) )
-    ofp.close()
-            
-
-if True:
-    fSPA.prepare_md(dirpath=index,output=sys.stdout)
-
-if True:
-    print ''' </textarea> '''
 
 if True:
     print """
     <h1>
-    System prepared. Press <a href="submit.cgi?index=%s" > <font color="#CCCCCC"> Next Step </font> </a> to submit your job.
+    DEBUG
     </h1>
-    """%(index)
+    """
     
 
 print body_bottom

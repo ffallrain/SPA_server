@@ -159,7 +159,7 @@ if True:
             continue
 
 if True:
-    ofp = open("/home/fuqy/work/SPA_database/www/submit_jobs/%s/his.list"%index,'w')
+    ofp = open("%s/www/submit_jobs/%s/his.list"%( os.environ['SPA_DATABASE_HOME'],index) ,'w' )
     for key in keys:
         if key[:5] != "INDEX":
             ofp.write("%s %s\n"%(key,form.getfirst(key)) )

@@ -58,61 +58,83 @@ And another table of original SPA water information:
 
 Command :
 > ```
-       CREATE TABLE water_cluster
-       ( index_number INT(6) NOT NULL,
-       water_index INT(4) NOT NULL,
-       water_type CHAR(3) DEFAULT "SOL",
-       occ FLOAT(4.2),
-       rt FLOAT(4.2),
-       o_x FLOAT(8.3),
-       o_y FLOAT(8.3),
-       o_z FLOAT(8.3),
-       h1_x FLOAT(8.3),
-       h1_y FLOAT(8.3),
-       h1_z FLOAT(8.3),
-       h2_x FLOAT(8.3),
-       h2_y FLOAT(8.3),
-       h2_z FLOAT(8.3),
-       vdw_sol FLOAT,
-       ele_sol FLOAT,
-       vdw_rec FLOAT,
-       ele_rec FLOAT,
-       t_s FLOAT,
-       o_s FLOAT,
-       spa_g FLOAT,
-       register_date TIMESTAMP
-       ) ;
-```
+>       CREATE TABLE water_cluster
+>       ( index_number INT(6) NOT NULL,
+>       water_index INT(4) NOT NULL,
+>       water_type CHAR(3) DEFAULT "SOL",
+>       occ FLOAT(4.2),
+>       rt FLOAT(4.2),
+>       o_x FLOAT(8.3),
+>       o_y FLOAT(8.3),
+>       o_z FLOAT(8.3),
+>       h1_x FLOAT(8.3),
+>       h1_y FLOAT(8.3),
+>       h1_z FLOAT(8.3),
+>       h2_x FLOAT(8.3),
+>       h2_y FLOAT(8.3),
+>       h2_z FLOAT(8.3),
+>       vdw_sol FLOAT,
+>       ele_sol FLOAT,
+>       vdw_rec FLOAT,
+>       ele_rec FLOAT,
+>       t_s FLOAT,
+>       o_s FLOAT,
+>       spa_g FLOAT,
+>       register_date TIMESTAMP
+>       ) ;
+> ```
 
 Result table:
 > ```
-+---------------+-----------+------+-----+-------------------+-----------------------------+
-| Field         | Type      | Null | Key | Default           | Extra                       |
-+---------------+-----------+------+-----+-------------------+-----------------------------+
-| index_number  | int(6)    | NO   | PRI | NULL              |                             |
-| water_index   | int(4)    | NO   |     | NULL              |                             |
-| water_type    | char(3)   | YES  |     | SOL               |                             |
-| occ           | float     | YES  |     | NULL              |                             |
-| rt            | float     | YES  |     | NULL              |                             |
-| o_x           | float     | YES  |     | NULL              |                             |
-| o_y           | float     | YES  |     | NULL              |                             |
-| o_z           | float     | YES  |     | NULL              |                             |
-| h1_x          | float     | YES  |     | NULL              |                             |
-| h1_y          | float     | YES  |     | NULL              |                             |
-| h1_z          | float     | YES  |     | NULL              |                             |
-| h2_x          | float     | YES  |     | NULL              |                             |
-| h2_y          | float     | YES  |     | NULL              |                             |
-| h2_z          | float     | YES  |     | NULL              |                             |
-| vdw_sol       | float     | YES  |     | NULL              |                             |
-| ele_sol       | float     | YES  |     | NULL              |                             |
-| vdw_rec       | float     | YES  |     | NULL              |                             |
-| ele_rec       | float     | YES  |     | NULL              |                             |
-| t_s           | float     | YES  |     | NULL              |                             |
-| o_s           | float     | YES  |     | NULL              |                             |
-| spa_g         | float     | YES  |     | NULL              |                             |
-| register_date | timestamp | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
-+---------------+-----------+------+-----+-------------------+-----------------------------+
-```
+> +---------------+-----------+------+-----+-------------------+-----------------------------+
+> | Field         | Type      | Null | Key | Default           | Extra                       |
+> +---------------+-----------+------+-----+-------------------+-----------------------------+
+> | index_number  | int(6)    | NO   | PRI | NULL              |                             |
+> | water_index   | int(4)    | NO   |     | NULL              |                             |
+> | water_type    | char(3)   | YES  |     | SOL               |                             |
+> | occ           | float     | YES  |     | NULL              |                             |
+> | rt            | float     | YES  |     | NULL              |                             |
+> | o_x           | float     | YES  |     | NULL              |                             |
+> | o_y           | float     | YES  |     | NULL              |                             |
+> | o_z           | float     | YES  |     | NULL              |                             |
+> | h1_x          | float     | YES  |     | NULL              |                             |
+> | h1_y          | float     | YES  |     | NULL              |                             |
+> | h1_z          | float     | YES  |     | NULL              |                             |
+> | h2_x          | float     | YES  |     | NULL              |                             |
+> | h2_y          | float     | YES  |     | NULL              |                             |
+> | h2_z          | float     | YES  |     | NULL              |                             |
+> | vdw_sol       | float     | YES  |     | NULL              |                             |
+> | ele_sol       | float     | YES  |     | NULL              |                             |
+> | vdw_rec       | float     | YES  |     | NULL              |                             |
+> | ele_rec       | float     | YES  |     | NULL              |                             |
+> | t_s           | float     | YES  |     | NULL              |                             |
+> | o_s           | float     | YES  |     | NULL              |                             |
+> | spa_g         | float     | YES  |     | NULL              |                             |
+> | register_date | timestamp | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+> +---------------+-----------+------+-----+-------------------+-----------------------------+
+> ```
+
+**Job status**
+
+Command:
+
+> create table job_status (job_index int(6) NOT NULL, name char(8) , register_date timestamp, status char(8) DEFAULT "submit", index_number int(6)  );
+
+Result table:
+
+>``` MySQL [test]> describe job_status;
+>+---------------+-----------+------+-----+-------------------+-----------------------------+
+> | Field         | Type      | Null | Key | Default           | Extra                       |
+> +---------------+-----------+------+-----+-------------------+-----------------------------+
+> | job_index     | int(6)    | NO   |     | NULL              |                             |
+> | name          | char(8)   | YES  |     | NULL              |                             |
+> | register_date | timestamp | NO   |     | CURRENT_TIMESTAMP | on update CURRENT_TIMESTAMP |
+> | status        | char(8)   | YES  |     | submit            |                             |
+> | index_number  | int(6)    | YES  |     | NULL              |                             |
+> +---------------+-----------+------+-----+-------------------+-----------------------------+
+> ```
+
+
 
 ### 2.2 Inserting data
 

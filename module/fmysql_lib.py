@@ -219,8 +219,7 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
         cursor.close()
         cnx.close()
 
-def register_job(dir_name):
-
+def register_job(dir_name,name):
     if True: # link to database
         cnx = mc.MySQLConnection( user=user, password=password, host=host, database=database )
         cursor = cnx.cursor()
@@ -244,10 +243,10 @@ def register_job(dir_name):
         cnx = mc.MySQLConnection( user=user, password=password, host=host, database=database )
         query = ('''
                 INSERT INTO job_status 
-                (job_index)
+                (job_index, name )
                 VALUES
-                (%d)
-        '''%index)
+                (%d, "%s")
+        '''%(index,name) )
         cursor = cnx.cursor()
         cursor.execute( query,() )
         for result in cursor.stored_results():
@@ -284,3 +283,5 @@ def update_job_status( job_index, job_status = None , index_number =0  ):
         for result in cursor.stored_results():
             a = result.fetchall()
     return True
+
+

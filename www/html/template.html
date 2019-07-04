@@ -17,6 +17,14 @@
         }
         function jmolApplet0_isReady() {
             Jmol.script(jmolApplet0,";select [INH]; hide [INH] ;selectionHalos ON; select protein or nucleic; cartoons only;select none; set windowCentered TRUE;center [SOL];zoom IN ;");
+            Jmol.script(jmolApplet0,";antialiasDisplay = true; color property atomno;");
+            Jmol.script(jmolApplet0,";cartoonsFancy = true;");
+            Jmol.script(jmolApplet0,";select all;");
+            Jmol.script(jmolApplet0,";color cartoon property atomno ;");
+            Jmol.script(jmolApplet0,";select [SOL] ;");
+            Jmol.script(jmolApplet0,";spacefill 50%;");
+            Jmol.script(jmolApplet0,";selectionHalos ON;");
+            Jmol.script(jmolApplet0,";select none;");
         }
         var Info0 = {
             width: 600,

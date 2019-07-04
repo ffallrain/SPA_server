@@ -146,6 +146,7 @@
       <form action="/cgi-bin/upload_by_browser.cgi" method="post" name="upload_files" enctype="multipart/form-data" target="current">
           <p> Clean receptor file : <input type="file" name='rec' value="rec.pdb" id='rec'> </p>
           <p> Clean ligand file : <input type="file" name='lig' value="lig.pdb" id='lig'>   </p>
+          <p> Job name  <input type="text" name='name' id='name'> (Can't be started with a number. No spaces) </p>
           <p> <input type="submit" name="upload_button" value="Upload"> </p>
       </form>
   </table>

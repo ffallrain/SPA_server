@@ -6,6 +6,7 @@ import fpdb
 import fSPA
 cgitb.enable(display=0, logdir="/log/cgi_test.log")
 
+
 if True:
     head = '''
     <!DOCTYPE html>
@@ -145,16 +146,11 @@ if True:
     index = form.getfirst('index')
 
 if True:
-    fSPA.submit_job(index)
-
-
-if True:
-    print """
-    <h1>
-    DEBUG
-    </h1>
-    """
-    
+    fSPA.submit_job(index,stype='AMOEBA',queue='gpu')
+    sys.path.append("%s/module"%os.environ['SPA_DATABASE_HOME'])
+    # from fmysql_lib import register_job
+    name = open("%s/www/submit_jobs/%s/name"%(os.environ['SPA_DATABASE_HOME'],index)).read().strip()
+    # register_job(index,name)
 
 print body_bottom
 

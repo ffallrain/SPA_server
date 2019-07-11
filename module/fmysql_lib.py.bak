@@ -4,9 +4,9 @@ import sys,os
 import fSPA
 
 #### Link to database
-host = "localhost"
-database = "SPA_database"
-user = "fuqy"
+host = "k203"
+database = "test"
+user = "flexsite"
 password = "123"
 
 def fetch_query(pdbid,chain,ligname):
@@ -56,7 +56,7 @@ def fetch_query(pdbid,chain,ligname):
                 keys.append(key)
 
         for key in keys:
-            print(key,waters[key])
+            print key,waters[key]
             
         
     if True: # close database
@@ -81,7 +81,7 @@ def list_query(t):
             sys.exit()
         else:
             for a in answer :
-                print(a)
+                print a
         
     if t == 'water' : # get water information
         query = ('''
@@ -98,7 +98,7 @@ def list_query(t):
             sys.exit()
         else:
             for a in answer :
-                print(a)
+                print a
 
     cursor.close()
     cnx.close()
@@ -110,12 +110,11 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
     summary = fSPA.fSPA_summary(infile)
     number_of_waters = len(summary.waters)
 
-    # if True: # link to database
-    cnx = mc.MySQLConnection( user=user, password=password, host=host, database=database )
-    cursor = cnx.cursor()
+    if True: # link to database
+        cnx = mc.MySQLConnection( user=user, password=password, host=host, database=database )
+        cursor = cnx.cursor()
 
     #### register system_information and get index
-    update = False
     if True: # check if there's already such an entry 
         update = True
         query = """SELECT pdb_id,chain,binding_site_definition,register_date
@@ -123,7 +122,7 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
                 WHERE pdb_id = '%s' AND chain = '%s' AND binding_site_definition = '%s' 
                 """
         query = query%(pdb_id,chain,ligname)
-        cursor.execute( query )
+        cursor.execute( query,() )
         answer = cursor.fetchall() 
         N_result = len(answer)
         for a in answer:
@@ -143,10 +142,10 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
 
         data = (pdb_id,ligname,chain,resolution,number_of_waters)
         query = query%data
-        print("RUN",query)
-        cursor.execute( query )
+
+        cursor.execute( query,() )
         for result in cursor.stored_results():
-            print(result.fetchall())
+            print result.fetchall()
 
     else: # update exist entry
         query = ('''
@@ -158,9 +157,9 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
         data = (resolution,alternative_pose,number_of_waters,pdb_id, chain, ligname)
         query = query%data
 
-        cursor.execute( query )
+        cursor.execute( query,() )
         for result in cursor.stored_results():
-            print(result.fetchall())
+            print result.fetchall()
 
     if True: # Get index, use it to make 
         query = """SELECT index_number,pdb_id,chain,binding_site_definition,register_date
@@ -168,11 +167,9 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
                 WHERE pdb_id = '%s' AND chain = '%s' AND binding_site_definition = '%s' 
                 """
         query = query%(pdb_id,chain,ligname)
-        print("RUN2",query)
-        cursor.execute( query )
+        cursor.execute( query,() )
         answer = cursor.fetchall() 
         N_result = len(answer)
-        print("N_result",N_result)
         if N_result <=0 :
             sys.stderr.write("##### ERROR cannot find registered entry !\n")
             cursor.close()
@@ -180,7 +177,6 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
             sys.exit()
         else:
             index = int( answer[0][0] )
-        print("index",index)
         
     if True: # insert entries in water_cluster
         for water in summary.waters :
@@ -215,14 +211,12 @@ def submit_query( infile, pdbid, chain, ligname, resolution, alternative_pose ):
             
             query = query%( index, water_index, water_type, occ, rt, o_x, o_y, o_z, h1_x, h1_y, h1_z, h2_x, h2_y, h2_z, vdw_sol, vdw_rec, ele_sol, ele_rec, t_s, o_s, spa_g )
             
-            print("QUERY",query)
             cursor.execute( query, () )
             for result in cursor.stored_results():
-                print(result.fetchall())
+                print result.fetchall()
         
     if True: # close database
         cursor.close()
-        cnx.commit()
         cnx.close()
 
 def register_job(dir_name,name):
@@ -243,7 +237,6 @@ def register_job(dir_name,name):
         pass
     if N_result >= 1:
         cursor.close()
-        cnx.commit()
         cnx.close()
         return False
     else:
@@ -259,7 +252,6 @@ def register_job(dir_name,name):
         for result in cursor.stored_results():
             a = result.fetchall()
         cursor.close()
-        cursor.commit()
         cnx.close()
         return True
 
@@ -275,7 +267,7 @@ def update_job_status( job_index, job_status = None , index_number =0  ):
                     status = "%s"
                 WHERE job_index = %d
                 """%(job_status,job_index)
-        print(query)
+        print query
         cursor = cnx.cursor()
         cursor.execute( query,() )
         for result in cursor.stored_results():
